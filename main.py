@@ -33,12 +33,13 @@ def main():
 	league_hot = league.get_hot(limit=limit)
 	for place, post in zip(xrange(1,limit+1), league_hot):
 		#I'm so thankful this worked the first time, this is just awful.
-		name = post.permalink
-		current = filter(lambda x: x[0]==name, list(front))
+		url = post.permalink
+		name = post.title
+		current = filter(lambda x: x[0]==url, list(front))
 		#technically only works if no post is rank > 100000000
 		smallest_past = min([i[1] for i in current] or [100000000])
 		smallest = min(place, smallest_past)
-		front.add((name, smallest))
+		front.add((url, smallest, name))
 	front = list(front)
 	front.sort(key=lambda x: x[1])
 	with open("frontOfLeague", "w") as obj:
@@ -52,7 +53,7 @@ def poster():
 	obj.close()
 	posting_str = ""
 	for post in front:
-		posting_str += post[0] + " :: " + str(post[1]) + "\n\n"
+		posting_str += "[" + post[2] + "](" + post[0] +")"+ " :: " + str(post[1]) + "\n\n"
 	r.submit(SUBREDDIT, "Front of league for %s."%datetime.date.today(), text=posting_str)
 	os.remove("frontOfLeague")
 
