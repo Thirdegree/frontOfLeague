@@ -41,7 +41,7 @@ def main():
 		front.add((name, smallest))
 	front = list(front)
 	front.sort(key=lambda x: x[1])
-	with open("frontOfLeague", "with") as obj:
+	with open("frontOfLeague", "w") as obj:
 		json.dump(front, obj, indent=4)
 
 def poster():
